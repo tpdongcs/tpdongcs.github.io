@@ -49,19 +49,33 @@ function updateChart(count, data) {
 	}
 
 	if (dps.length > dataLength) {
-		dps.splice(0, 100);
+		dps.splice(0, count);
 	}
 
 	chartECG.render();
 };
 
 function updateChartWarning(data){
+	for(i=0; i<100; i++){
+		dpsWarning.push({
+			x: xVal++,
+			y: data[i]
+		})
+	}
 	for(i=0; i<data.length; i++){
 		dpsWarning.push({
 			x: xVal++,
 			y: data[i]
 		})
 	}
-	dpsWarning.splice(0, data.length)
+	for(i=data.length - 100; i<data.length; i++){
+		dpsWarning.push({
+			x: xVal++,
+			y: data[i]
+		})
+	}
+	if(dpsWarning.length > 700){
+		dpsWarning.splice(0, data.length + 200)	
+	}
 	chartWarning.render()
 }

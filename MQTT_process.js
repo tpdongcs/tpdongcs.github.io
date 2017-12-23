@@ -1,5 +1,5 @@
 window.onload = function() {
-    
+    let dataLength = 700
     let ecgFromArduinoTopic = "iotsystem/heartcare/ecg/display/"
     let ecgFromPhysionetTopic = "iotsystem/heartcare/ecg/physionet/display/"
     let warningTopic = "iotsystem/heartcare/warning/display/"
@@ -38,13 +38,18 @@ window.onload = function() {
         }
     }
      function processEcgFromArduino(topic, payload){
-        content = payload.toString()
-        if(content.length == 200){
-          contentDecode = decodeContent(content)
-          updateChart(100, contentDecode)
+        content = payload.toString().substring(1)
+        // if(content.length == 200){
+        //   contentDecode = decodeContent(content)
+        //   updateChart(100, contentDecode)
+        // }
+        data = content.split(',').map(x=> parseInt(x))
+        if(data.length == dataLength){
+            updateChart(dataLength, data)    
         }
       }
 
+    // [Obsolete]
      function decodeContent(content){
        result = []
        for(i=0; i<content.length; i=i+2){
@@ -56,6 +61,7 @@ window.onload = function() {
 
      function processWarning(topic, payload){
          content = payload.toString();
+         console.log(content);
          data = content.split(',').map(x => parseInt(x))
          updateChartWarning(data)
      }
